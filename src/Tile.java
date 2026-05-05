@@ -1,5 +1,10 @@
 public class Tile {
 
     private int value;
-    ///private Enum? color;
+    private Colors color;
+
+    Tile (int value, int color) {
+        this.value = value;
+        this.color = Colors.setColor(color);
+    }
 }
