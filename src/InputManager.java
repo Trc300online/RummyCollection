@@ -27,4 +27,31 @@ public class InputManager {
 
         return name;
     }
+
+    public static char getAction() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askAction();
+        char action = s.next().toUpperCase().charAt(0);
+
+        return action;
+    }
+
+    public static char getDeck() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askDeck();
+        char deck = s.next().toUpperCase().charAt(0);
+
+        return deck;
+    }
+
+    public static int getTile() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askTile();
+        int index = s.nextInt();
+
+        return index;
+    }
 }

@@ -16,7 +16,7 @@ public class Game {
         while (gameContinue) {
             Player currPlayer = playerList.get(turnCount % playerList.size());
 
-            playerAction();
+            playerAction(currPlayer); // draw (up or down), meld (select tiles and meld place or cancel meld), discard
 
                 if (gameContinue == false) {
                     //win cond?
@@ -27,6 +27,58 @@ public class Game {
 
         //currPlayer = playerList(turnCount % playerList.size());
 
+    }
+
+    private void playerAction(Player player) {
+        boolean endTurn = false;
+
+        draw(player); //here get asked up or down
+        while (!endTurn) {
+            switch (InputManager.getAction()) {
+                case 'M':
+                    meld();
+                    break;
+                case 'D':
+                    discard(player);
+                    endTurn = true;
+                    break;
+                default:
+                    Screen.errorHandler(2);
+            }
+        }
+    }
+
+    private void discard(Player player) {
+        Deck.addUpDeck(player.removeFromHand(InputManager.getTile()));
+    }
+
+    private void draw(Player player) {
+        boolean drawn = false;
+
+        while (!drawn){
+            switch (InputManager.getDeck()) {
+                case 'U':
+                    player.addToHand(Deck.getUpDeck());
+                    drawn = true;
+                    break;
+                case 'D':
+                    player.addToHand(Deck.getRandTile());
+                    drawn = true;
+                    break;
+                default:
+                    Screen.errorHandler(2);
+            }
+        }
+    }
+
+    private void dealTiles() {
+        for (int i = 0; i < playerList.size(); i++) {
+            for (int j = 0; j < 14; j++) {
+                playerList.get(i).addToHand(Deck.getRandTile());
+            }
+        }
+
+        Deck.addUpDeck(Deck.getRandTile());
     }
 
     private void tileSetUp(int size) {
