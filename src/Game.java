@@ -36,7 +36,7 @@ public class Game {
         while (!endTurn) {
             switch (InputManager.getAction()) {
                 case 'M':
-                    meld();
+                    meld(player);
                     break;
                 case 'D':
                     discard(player);
@@ -46,6 +46,21 @@ public class Game {
                     Screen.errorHandler(2);
             }
         }
+    }
+
+    private void meld(Player player) {
+        ArrayList<Tile> tileSelected = null;
+        int index = -1;
+        while (true) {
+            index = InputManager.getSelectTile();
+            if (index == 0) {
+                break;
+            }
+            Tile tmp = player.getHand().get(index);
+            tileSelected.add(tmp);
+        }
+
+        //if (tok o run) { rmove player hand + move tileselec -> board(0,0) + remove tileselec} else {errorhandelr(x) + remove tileselec + try again}
     }
 
     private void discard(Player player) {
@@ -96,7 +111,7 @@ public class Game {
         for (int i = 0; i < deckAmount; i++) {
             for (int j = 0; j < 4; j++) {
                 for (int k = 0; k < 13; k++) {
-                    Deck.addDownDeck(new Tile(k, j));
+                    Deck.addDownDeck(new Tile( (k + 1), j));
                 }
             }
         }

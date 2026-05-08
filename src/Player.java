@@ -20,4 +20,8 @@ public class Player {
 
         return tile;
     }
+
+    public ArrayList<Tile> getHand() {
+        return hand;
+    }
 }

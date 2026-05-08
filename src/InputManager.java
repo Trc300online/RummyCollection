@@ -54,4 +54,7 @@ public class InputManager {
 
         return index;
     }
+
+    public static int getSelectTile() {
+    }
 }

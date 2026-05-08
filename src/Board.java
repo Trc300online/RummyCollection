@@ -1,11 +1,11 @@
 public class Board {
     ///private ArrayList<ArrayList<Tile>> board; or table;
 
-    private boolean isToK() {
+    public static boolean isToK() {
         return true;
     }
 
-    private boolean isRun() {
+    public boolean isRun() {
         return true;
     }
 }
