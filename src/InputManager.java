@@ -56,5 +56,38 @@ public class InputManager {
     }
 
     public static int getSelectTile() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askTile();
+        int index = s.nextInt();
+
+        return index;
+    }
+
+    public static char getMeldOff() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askMeldOff();
+        char meldOff = s.next().toUpperCase().charAt(0);
+
+        return meldOff;
+    }
+
+    public static char getSide() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askSide();
+        char side = s.next().toUpperCase().charAt(0);
+
+        return side;
+    }
+
+    public static int getPlaceing() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askGroup();
+        int index = s.nextInt();
+
+        return index;
     }
 }

@@ -49,18 +49,61 @@ public class Game {
     }
 
     private void meld(Player player) {
-        ArrayList<Tile> tileSelected = null;
-        int index = -1;
-        while (true) {
-            index = InputManager.getSelectTile();
-            if (index == 0) {
-                break;
-            }
-            Tile tmp = player.getHand().get(index);
-            tileSelected.add(tmp);
-        }
+        ArrayList<Tile> tileSelected = new ArrayList<>();
+        ArrayList<Integer> indexes = new ArrayList<>();
 
-        //if (tok o run) { rmove player hand + move tileselec -> board(0,0) + remove tileselec} else {errorhandelr(x) + remove tileselec + try again}
+
+        switch (InputManager.getMeldOff()) {
+            case 'M':
+                while (true) {
+                    int index = -1;
+                    index = InputManager.getSelectTile();
+                    if (index == 0) {
+                        break;
+                    }
+                    Tile tmp = player.getHand().get(index);
+                    tileSelected.add(tmp);
+                    indexes.add(index);
+
+                }
+
+                if (Board.isToK(tileSelected) || Board.isRun(tileSelected)) {
+                    Board.addGroup();
+
+                    for (Tile tile : tileSelected) {
+                        Board.getBoard().getLast().add(tile);
+                    }
+
+                    for (int index : indexes) {
+                        player.removeFromHand(index);
+                    }
+
+                } else {
+                    tileSelected.clear();
+                    Screen.errorHandler(3);
+                }
+                break;
+            case 'L':
+                int index = -1;
+                index = InputManager.getSelectTile();
+                Tile tmp = player.getHand().get(index);
+                char side = InputManager.getSide();
+                int group = InputManager.getPlaceing();
+
+                if (Board.isToK(Board.addToMeld(tmp, side, group)) || Board.isRun(Board.addToMeld(tmp, side, group))) {
+                    switch (side) {
+                        case 'F':
+                            Board.getBoard().get(group).addFirst(tmp);
+                            break;
+                        case 'L':
+                            Board.getBoard().get(group).add(tmp);
+                            break;
+                    }
+                    player.removeFromHand(index);
+                } else {
+                    Screen.errorHandler(3);
+                }
+        }
     }
 
     private void discard(Player player) {
