@@ -3,12 +3,11 @@ import java.util.ArrayList;
 public class Player {
 
     private String name;
-    private ArrayList<Tile> hand;
+    private ArrayList<Tile> hand = new ArrayList<>();
     private int score;
 
     Player (String name) {
         this.name = name;
-        this.hand = null;
         this.score = 0;
     }
 

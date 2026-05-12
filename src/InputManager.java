@@ -50,7 +50,7 @@ public class InputManager {
 
         Scanner s = new Scanner(System.in);
         Screen.askTile();
-        int index = s.nextInt();
+        int index = s.nextInt() - 1;
 
         return index;
     }
@@ -59,7 +59,7 @@ public class InputManager {
 
         Scanner s = new Scanner(System.in);
         Screen.askTile();
-        int index = s.nextInt();
+        int index = s.nextInt() - 1;
 
         return index;
     }
@@ -86,7 +86,7 @@ public class InputManager {
 
         Scanner s = new Scanner(System.in);
         Screen.askGroup();
-        int index = s.nextInt();
+        int index = s.nextInt() - 1;
 
         return index;
     }

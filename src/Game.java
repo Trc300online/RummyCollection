@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Game {
 
@@ -10,7 +11,7 @@ public class Game {
         tileSetUp(playerList.size());
         dealTiles();
 
-        int turnCount = 0;
+        int turnCount = playerList.size();
 
         while (true) {
             while (true) {
@@ -83,8 +84,11 @@ public class Game {
     private void playerAction(Player player) {
         boolean endTurn = false;
 
+        Screen.printGame(player);
+
         draw(player); //here get asked up or down
         while (!endTurn) {
+            Screen.printGame(player);
             switch (InputManager.getAction()) {
                 case 'M':
                     meld(player);
@@ -107,15 +111,14 @@ public class Game {
         switch (InputManager.getMeldOff()) {
             case 'M':
                 while (true) {
-                    int index = -1;
+                    int index;
                     index = InputManager.getSelectTile();
-                    if (index == 0) {
+                    if (index == -1) {
                         break;
                     }
                     Tile tmp = player.getHand().get(index);
                     tileSelected.add(tmp);
                     indexes.add(index);
-
                 }
 
                 if (Board.isToK(tileSelected) || Board.isRun(tileSelected)) {
@@ -124,6 +127,8 @@ public class Game {
                     for (Tile tile : tileSelected) {
                         Board.getBoard().getLast().add(tile);
                     }
+
+                    indexes.sort(Collections.reverseOrder());
 
                     for (int index : indexes) {
                         player.removeFromHand(index);
@@ -167,7 +172,7 @@ public class Game {
         while (!drawn){
             switch (InputManager.getDeck()) {
                 case 'U':
-                    player.addToHand(Deck.getUpDeck());
+                    player.addToHand(Deck.grabUpDeck());
                     drawn = true;
                     break;
                 case 'D':
@@ -218,7 +223,7 @@ public class Game {
     private void playerSetUp(ArrayList<Player> playerList) {
         int totalPlayers = InputManager.getPlayers();
 
-        for (int i = 0; i > totalPlayers; i++) {
+        for (int i = 0; i < totalPlayers; i++) {
             playerList.add(new Player(InputManager.getName()));
         }
     }

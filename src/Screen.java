@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Screen {
 
     public static void errorHandler(int i) {
@@ -33,7 +35,7 @@ public class Screen {
     }
 
     public static void askTile() {
-        System.out.println("What tile do you want to select?");
+        System.out.println("What tile do you want to select? (press 0 to end selection)");
     }
 
     public static void askGroup() {
@@ -65,5 +67,39 @@ public class Screen {
 
     public static void announceWinner(Player finalWinner) {
         System.out.println("The winner of this tournament is " + finalWinner.getName() + ", with " + finalWinner.getScore() + " points!!!");
+    }
+
+    public static void printGame(Player player) {
+        printBoard();
+        printDeck();
+        printPlayerHand(player);
+    }
+
+    private static void printPlayerHand(Player player) {
+        System.out.println("-------------------------------------------------------------------------");
+        for (Tile tile : player.getHand()) {
+            System.out.print(tile);
+        }
+        System.out.println();
+    }
+
+    private static void printDeck() {
+        System.out.println("-------------------------------------------------------------------------");
+        if (Deck.getUpDeck() == null) {
+            System.out.println(" ");
+        } else {
+            System.out.println(Deck.getUpDeck());
+        }
+    }
+
+    private static void printBoard() {
+
+        for (ArrayList<Tile> group : Board.getBoard()) {
+            for (Tile tile : group) {
+                System.out.print(tile);
+            }
+            System.out.print("  ");
+        }
+        System.out.println();
     }
 }

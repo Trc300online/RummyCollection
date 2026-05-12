@@ -5,13 +5,13 @@ public class Board {
 
     public static boolean isToK(ArrayList<Tile> tiles) {
 
-        if (tiles.size() < 3 && tiles.size() > 4) {
+        if (tiles.size() < 3 || tiles.size() > 4) {
             return false;
         }
 
         for (int i = 1; i < tiles.size(); i++) {
             if ( ! (tiles.get(i).getValue() == tiles.get(i - 1).getValue())) {
-                if (tiles.get(i).getValue() != 0 || tiles.get(i - 1).getValue() != 0) {
+                if (tiles.get(i).getValue() != 0 && tiles.get(i - 1).getValue() != 0) {
                     return false;
                 }
             }
@@ -28,7 +28,7 @@ public class Board {
 
         for (int i = 1; i < tiles.size(); i++) {
             if ( ! (tiles.get(i).getValue() == tiles.get(i - 1).getValue() + 1) || ! (tiles.get(i).getColor() == tiles.get(i - 1).getColor())) {
-                if (tiles.get(i).getValue() != 0 || tiles.get(i - 1).getValue() != 0) {
+                if (tiles.get(i).getValue() != 0 && tiles.get(i - 1).getValue() != 0) {
                     return false;
                 }
             }
