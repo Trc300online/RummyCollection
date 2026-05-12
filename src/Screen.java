@@ -48,4 +48,22 @@ public class Screen {
     public static void askMeldOff() {
         System.out.println("Do you want to [M]eld or [L]ay off");
     }
+
+    public static void roundWinMsg(Player currPlayer) {
+        System.out.println("this round winner is " + currPlayer.getName() + ", with " + currPlayer.getScore() + " points!");
+    }
+
+    public static void askFinish() {
+        System.out.println("Do you want to end this tournament?");
+        System.out.println("[Y]es  |  [N]o");
+    }
+
+    public static void finishingTournamentMsg() {
+        System.out.println("Ending tournament...");
+        System.out.println("Counting points...");
+    }
+
+    public static void announceWinner(Player finalWinner) {
+        System.out.println("The winner of this tournament is " + finalWinner.getName() + ", with " + finalWinner.getScore() + " points!!!");
+    }
 }

@@ -90,4 +90,13 @@ public class InputManager {
 
         return index;
     }
+
+    public static char getEndTournament() {
+
+        Scanner s = new Scanner(System.in);
+        Screen.askFinish();
+        char end = s.next().toUpperCase().charAt(0);
+
+        return end;
+    }
 }

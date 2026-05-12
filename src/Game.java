@@ -10,23 +10,74 @@ public class Game {
         tileSetUp(playerList.size());
         dealTiles();
 
-        boolean gameContinue = true;
         int turnCount = 0;
 
-        while (gameContinue) {
-            Player currPlayer = playerList.get(turnCount % playerList.size());
+        while (true) {
+            while (true) {
+                Player currPlayer = playerList.get(turnCount % playerList.size());
 
-            playerAction(currPlayer); // draw (up or down), meld (select tiles and meld place or cancel meld), discard
+                playerAction(currPlayer); // draw (up or down), meld (select tiles and meld place or cancel meld), discard
 
-                if (gameContinue == false) {
-                    //win cond?
+                if (winCheck(currPlayer)) {
+                    currPlayer.addScore(givePoints(playerList, turnCount));
+                    Screen.roundWinMsg(currPlayer);
                     break;
                 }
-            turnCount++;
+                turnCount++;
+            }
+            if (endTournament()) {
+                Screen.announceWinner(getFinalWinner(playerList));
+                break;
+            }
         }
 
         //currPlayer = playerList(turnCount % playerList.size());
 
+    }
+
+    private Player getFinalWinner(ArrayList<Player> playerList) {
+
+        int topScore = 0;
+        Player topPlayer = null;
+
+        for (int i = 0; i < playerList.size(); i++) {
+            if (playerList.get(i).getScore() > topScore) {
+                topScore = playerList.get(i).getScore();
+                topPlayer = playerList.get(i);
+            }
+        }
+
+        return topPlayer;
+    }
+
+    private boolean endTournament() {
+        switch (InputManager.getEndTournament()) {
+            case 'Y':
+                Screen.finishingTournamentMsg();
+                return true;
+            case 'N':
+                return false;
+        }
+
+        return false;
+    }
+
+    private int givePoints(ArrayList<Player> playerList, int turnCount) {
+        int points = 0;
+
+        for (int i = 0; i < playerList.size(); i++) {
+            if (i != (turnCount % playerList.size())) {
+                for (int j = 0; j < playerList.get(i).getHand().size(); j++) {
+                    points += playerList.get(i).getHand().get(j).getValue();
+                }
+            }
+        }
+
+        return points;
+    }
+
+    private boolean winCheck(Player player) {
+        return player.getHand().isEmpty();
     }
 
     private void playerAction(Player player) {

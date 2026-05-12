@@ -4,10 +4,12 @@ public class Player {
 
     private String name;
     private ArrayList<Tile> hand;
+    private int score;
 
     Player (String name) {
         this.name = name;
         this.hand = null;
+        this.score = 0;
     }
 
     public void addToHand(Tile tile) {
@@ -23,5 +25,17 @@ public class Player {
 
     public ArrayList<Tile> getHand() {
         return hand;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void addScore(int score) {
+        this.score += score;
+    }
+
+    public String getName() {
+        return name;
     }
 }
