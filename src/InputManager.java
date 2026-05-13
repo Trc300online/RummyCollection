@@ -1,20 +1,23 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class InputManager {
 
     public static int getPlayers() {
-        int totalPlayers;
-        Scanner s = new Scanner(System.in);
+        int totalPlayers = 0;
 
-        //try {
-            do {
+        do {
+            try {
+                Scanner s = new Scanner(System.in);
                 Screen.askPlayers();
                 totalPlayers = s.nextInt();
                 if (totalPlayers < 2 || totalPlayers > 4) {
                     Screen.errorHandler(1);
                 }
-            } while (totalPlayers < 2 || totalPlayers > 4);
-        //} catch ()
+            } catch (InputMismatchException e) {
+                Screen.errorHandler(2);
+            }
+        } while (totalPlayers < 2 || totalPlayers > 4);
 
         return totalPlayers;
     }
@@ -56,10 +59,15 @@ public class InputManager {
     }
 
     public static int getSelectTile() {
-
-        Scanner s = new Scanner(System.in);
-        Screen.askTile();
-        int index = s.nextInt() - 1;
+        int index = -1;
+        
+        try {
+            Scanner s = new Scanner(System.in);
+            Screen.askTile();
+            index = s.nextInt() - 1;
+        } catch (InputMismatchException ime) {
+            Screen.errorHandler(2);
+        }
 
         return index;
     }
@@ -74,19 +82,35 @@ public class InputManager {
     }
 
     public static char getSide() {
+        char side;
 
-        Scanner s = new Scanner(System.in);
-        Screen.askSide();
-        char side = s.next().toUpperCase().charAt(0);
+        while (true) {
+            try {
+                Scanner s = new Scanner(System.in);
+                Screen.askSide();
+                side = s.next().toUpperCase().charAt(0);
+                break;
+            } catch (InputMismatchException ime) {
+                Screen.errorHandler(2);
+            }
+        }
 
         return side;
     }
 
     public static int getPlaceing() {
+        int index;
 
-        Scanner s = new Scanner(System.in);
-        Screen.askGroup();
-        int index = s.nextInt() - 1;
+        while (true) {
+            try {
+                Scanner s = new Scanner(System.in);
+                Screen.askGroup();
+                index = s.nextInt() - 1;
+                break;
+            } catch (InputMismatchException ime) {
+                Screen.errorHandler(2);
+            }
+        }
 
         return index;
     }

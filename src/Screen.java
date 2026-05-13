@@ -12,6 +12,8 @@ public class Screen {
                 break;
             case 3:
                 System.out.println("Invalid meld/lay off, please try again");
+            case 4:
+                System.out.println("There are no tiles that far, please select a tile from your hand");
         }
     }
 
@@ -35,7 +37,7 @@ public class Screen {
     }
 
     public static void askTile() {
-        System.out.println("What tile do you want to select? (press 0 to end selection)");
+        System.out.println("What tile do you want to select? (press 0 to end MELD selection)");
     }
 
     public static void askGroup() {

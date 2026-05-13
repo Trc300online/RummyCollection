@@ -104,15 +104,16 @@ public class Game {
     }
 
     private void meld(Player player) {
+        /// maybe hashmap?
         ArrayList<Tile> tileSelected = new ArrayList<>();
         ArrayList<Integer> indexes = new ArrayList<>();
 
 
         switch (InputManager.getMeldOff()) {
             case 'M':
+                /// getMeldSelection()
                 while (true) {
-                    int index;
-                    index = InputManager.getSelectTile();
+                    int index = InputManager.getSelectTile();
                     if (index == -1) {
                         break;
                     }
@@ -121,6 +122,7 @@ public class Game {
                     indexes.add(index);
                 }
 
+                /// playMeld()
                 if (Board.isToK(tileSelected) || Board.isRun(tileSelected)) {
                     Board.addGroup();
 
@@ -140,12 +142,31 @@ public class Game {
                 }
                 break;
             case 'L':
-                int index = -1;
-                index = InputManager.getSelectTile();
-                Tile tmp = player.getHand().get(index);
-                char side = InputManager.getSide();
-                int group = InputManager.getPlaceing();
+                if (Board.getBoard().isEmpty()) {
+                    break;
+                }
+                    int index = -1;
+                    Tile tmp;
+                    char side;
+                    int group;
+                    /// getLayOffSelection()
+                    while (true) {
+                        try {
+                            index = InputManager.getSelectTile();
+                            if (index == -1) {
+                                continue;
+                            }
+                            tmp = player.getHand().get(index);
+                            side = InputManager.getSide();
+                            group = InputManager.getPlaceing();
+                            break;
+                        } catch (IndexOutOfBoundsException ioobe) {
+                            Screen.errorHandler(4);
+                        }
+                    }
 
+
+                    /// playLayOff()
                 if (Board.isToK(Board.addToMeld(tmp, side, group)) || Board.isRun(Board.addToMeld(tmp, side, group))) {
                     switch (side) {
                         case 'F':
@@ -154,11 +175,16 @@ public class Game {
                         case 'L':
                             Board.getBoard().get(group).add(tmp);
                             break;
+                        default:
+                            Screen.errorHandler(2);
                     }
                     player.removeFromHand(index);
                 } else {
                     Screen.errorHandler(3);
                 }
+                break;
+            default:
+                Screen.errorHandler(2);
         }
     }
 
