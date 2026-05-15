@@ -1,5 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
+import java.util.*;
 
 public class Game {
 
@@ -104,88 +103,120 @@ public class Game {
     }
 
     private void meld(Player player) {
-        /// maybe hashmap?
-        ArrayList<Tile> tileSelected = new ArrayList<>();
-        ArrayList<Integer> indexes = new ArrayList<>();
-
+        LinkedHashMap<Integer, Tile> indexesTiles;
 
         switch (InputManager.getMeldOff()) {
             case 'M':
-                /// getMeldSelection()
-                while (true) {
-                    int index = InputManager.getSelectTile();
-                    if (index == -1) {
-                        break;
-                    }
-                    Tile tmp = player.getHand().get(index);
-                    tileSelected.add(tmp);
-                    indexes.add(index);
-                }
 
-                /// playMeld()
-                if (Board.isToK(tileSelected) || Board.isRun(tileSelected)) {
-                    Board.addGroup();
-
-                    for (Tile tile : tileSelected) {
-                        Board.getBoard().getLast().add(tile);
-                    }
-
-                    indexes.sort(Collections.reverseOrder());
-
-                    for (int index : indexes) {
-                        player.removeFromHand(index);
-                    }
-
-                } else {
-                    tileSelected.clear();
-                    Screen.errorHandler(3);
-                }
+                indexesTiles = getMeldSelection(player);
+                playMeld(indexesTiles, player);
                 break;
+
             case 'L':
                 if (Board.getBoard().isEmpty()) {
                     break;
                 }
-                    int index = -1;
-                    Tile tmp;
-                    char side;
-                    int group;
-                    /// getLayOffSelection()
-                    while (true) {
-                        try {
-                            index = InputManager.getSelectTile();
-                            if (index == -1) {
-                                continue;
-                            }
-                            tmp = player.getHand().get(index);
-                            side = InputManager.getSide();
-                            group = InputManager.getPlaceing();
-                            break;
-                        } catch (IndexOutOfBoundsException ioobe) {
-                            Screen.errorHandler(4);
-                        }
-                    }
 
+                ArrayList variables = new ArrayList();
 
-                    /// playLayOff()
-                if (Board.isToK(Board.addToMeld(tmp, side, group)) || Board.isRun(Board.addToMeld(tmp, side, group))) {
-                    switch (side) {
-                        case 'F':
-                            Board.getBoard().get(group).addFirst(tmp);
-                            break;
-                        case 'L':
-                            Board.getBoard().get(group).add(tmp);
-                            break;
-                        default:
-                            Screen.errorHandler(2);
-                    }
-                    player.removeFromHand(index);
-                } else {
-                    Screen.errorHandler(3);
-                }
+                variables = getLayOffSelection(player);
+                playLayOff(variables, player);
+
                 break;
             default:
                 Screen.errorHandler(2);
         }
+    }
+
+    private void playLayOff(ArrayList variables, Player player) {
+        Tile tmp = (Tile) variables.get(0);
+        char side = (char) variables.get(1);
+        int group = (Integer) variables.get(2);
+        int index = (Integer) variables.get(3);
+
+        if (Board.isToK(Board.addToMeld(tmp, side, group)) || Board.isRun(Board.addToMeld(tmp, side, group))) {
+            switch (side) {
+                case 'F':
+                    Board.getBoard().get(group).addFirst(tmp);
+                    break;
+                case 'L':
+                    Board.getBoard().get(group).add(tmp);
+                    break;
+                default:
+                    Screen.errorHandler(2);
+            }
+            player.removeFromHand(index);
+        } else {
+            Screen.errorHandler(3);
+        }
+    }
+
+    private ArrayList getLayOffSelection(Player player) {
+        ArrayList var = new ArrayList();
+        int index = -1;
+        Tile tmp;
+        char side;
+        int group;
+
+        while (true) {
+            try {
+                index = InputManager.getSelectTile();
+                if (index == -1) {
+                    continue;
+                }
+                tmp = player.getHand().get(index);
+                side = InputManager.getSide();
+                group = InputManager.getPlaceing();
+                break;
+            } catch (IndexOutOfBoundsException ioobe) {
+                Screen.errorHandler(4);
+            }
+        }
+
+        var.add(tmp);
+        var.add(side);
+        var.add(group);
+        var.add(index);
+
+        return var;
+    }
+
+    private void playMeld(LinkedHashMap<Integer,Tile> indexesTiles, Player player) {
+        ArrayList<Tile> tileSelected = new ArrayList<>(indexesTiles.values());
+        ArrayList<Integer> indexes = new ArrayList<>(indexesTiles.keySet());
+
+        if (Board.isToK(tileSelected) || Board.isRun(tileSelected)) {
+            Board.addGroup();
+
+            for (Tile tile : tileSelected) {
+                Board.getBoard().getLast().add(tile);
+            }
+
+            indexes.sort(Collections.reverseOrder());
+
+            for (int index : indexes) {
+                player.removeFromHand(index);
+            }
+
+        } else {
+            tileSelected.clear();
+            Screen.errorHandler(3);
+        }
+    }
+
+    private LinkedHashMap<Integer,Tile> getMeldSelection(Player player) {
+        LinkedHashMap<Integer, Tile> map = new LinkedHashMap<>();
+
+        while (true) {
+            int index = InputManager.getSelectTile();
+            if (index == -1) {
+                break;
+            }
+            Tile tmp = player.getHand().get(index);
+            map.put(index, tmp);
+        }
+
+        return map;
     }
 
     private void discard(Player player) {
