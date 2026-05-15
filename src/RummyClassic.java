@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class Game {
+public class RummyClassic {
 
     private ArrayList<Player> playerList = new ArrayList<>();
 
